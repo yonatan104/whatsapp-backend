@@ -1,0 +1,6 @@
+logs
+logs/backend.log
+node_modules
+config/dev.js
+config/prod.js
+.env
