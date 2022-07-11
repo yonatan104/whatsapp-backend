@@ -5,7 +5,7 @@ const ObjectId = require('mongodb').ObjectId
 
 module.exports = {
     getById,
-    // update,
+    update,
     add
 }
 
@@ -22,22 +22,21 @@ async function getById(chatRoomId) {
 }
 
 
-// async function update(user) {
-//     try {
-//         // peek only updatable properties
-//         const userToSave = {
-//             _id: ObjectId(user._id), // needed for the returnd obj
-//             name: user.name,           
-//         }
-//         console.log('userToSave', userToSave);
-//         const collection = await dbService.getCollection('user')
-//         await collection.updateOne({ _id: userToSave._id }, { $set: userToSave })
-//         return userToSave
-//     } catch (err) {
-//         logger.error(`cannot update user ${user._id}`, err)
-//         throw err
-//     }
-// }
+async function update(chatRoom) {
+    try {
+        // peek only updatable properties
+        const chatRoomToSave = {
+            _id: ObjectId(chatRoom._id), // needed for the returnd obj
+            messages: chatRoom.messages,           
+        }
+        const collection = await dbService.getCollection('chatRoom')
+        await collection.updateOne({ _id: chatRoomToSave._id }, { $set: chatRoomToSave })
+        return chatRoomToSave
+    } catch (err) {
+        logger.error(`cannot update chatRoom ${chatRoom._id}`, err)
+        throw err
+    }
+}
 
 async function add(chatRoom) {
     try {

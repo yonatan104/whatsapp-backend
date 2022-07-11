@@ -1,11 +1,10 @@
 const express = require('express')
-const { getChatRoom, addChatRoom } = require('./chatRoom.controller')
-// const { getChatRoom, updateUser } = require('./chatRoom.controller')
+const { getChatRoom, addChatRoom, updateChatRoom } = require('./chatRoom.controller')
 const router = express.Router()
 
 router.get('/:id', getChatRoom)
 router.post('/:id', addChatRoom)
-// router.put('/:id', updateUser)
+router.put('/:id', updateChatRoom)
 
 
 module.exports = router

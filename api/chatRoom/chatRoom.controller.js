@@ -25,19 +25,19 @@ async function addChatRoom(req, res) {
 
 
 
-// async function updateUser(req, res) {
-//   try {
-//     const user = req.body
-//     const savedUser = await userService.update(user)
-//     res.send(savedUser)
-//   } catch (err) {
-//     logger.error('Failed to update user', err)
-//     res.status(500).send({ err: 'Failed to update user' })
-//   }
-// }
+async function updateChatRoom(req, res) {
+  try {
+    const chatRoom = req.body
+    const savedChatRoom = await chatRoomService.update(chatRoom)
+    res.send(savedChatRoom)
+  } catch (err) {
+    logger.error('Failed to update chat room', err)
+    res.status(500).send({ err: 'Failed to update chat room' })
+  }
+}
 
 module.exports = {
   getChatRoom,
-  addChatRoom
-  // updateUser,
+  addChatRoom,
+  updateChatRoom
 }
