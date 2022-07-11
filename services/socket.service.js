@@ -21,7 +21,7 @@ function setupSocketAPI(http) {
             }
             socket.stationId = stationId
             socket.join(stationId)
-            console.log('contact entered station!', stationId)
+            console.log('user entered station!', stationId)
         })
         socket.on('update-station', station => {
             socket.broadcast.to(station._id).emit('station-updated', station)
@@ -31,13 +31,13 @@ function setupSocketAPI(http) {
             gIo.emit('activity-log-made', activity)
             // socket.broadcast.emit('activity-log-made-brodcast', data)
         })
-        socket.on('set-contact-socket', contactId => {
-            logger.info(`Setting socket.contactId = ${contactId} for socket [id: ${socket.id}]`)
-            socket.contactId = contactId
+        socket.on('set-user-socket', userId => {
+            logger.info(`Setting socket.userId = ${userId} for socket [id: ${socket.id}]`)
+            socket.userId = userId
         })
-        socket.on('unset-contact-socket', () => {
-            logger.info(`Removing socket.contactId for socket [id: ${socket.id}]`)
-            delete socket.contactId
+        socket.on('unset-user-socket', () => {
+            logger.info(`Removing socket.userId for socket [id: ${socket.id}]`)
+            delete socket.userId
         })
 
     })
@@ -48,28 +48,28 @@ function emitTo({ type, data, label }) {
     else gIo.emit(type, data)
 }
 
-async function emitToUser({ type, data, contactId }) {
-    const socket = await _getUserSocket(contactId)
+async function emitToUser({ type, data, userId }) {
+    const socket = await _getUserSocket(userId)
 
     if (socket) {
-        logger.info(`Emiting event: ${type} to contact: ${contactId} socket [id: ${socket.id}]`)
+        logger.info(`Emiting event: ${type} to user: ${userId} socket [id: ${socket.id}]`)
         socket.emit(type, data)
     } else {
-        logger.info(`No active socket for contact: ${contactId}`)
+        logger.info(`No active socket for user: ${userId}`)
         // _printSockets()
     }
 }
 
 // If possible, send to all sockets BUT not the current socket 
 // Optionally, broadcast to a room / to all
-async function broadcast({ type, data, room = null, contactId }) {
+async function broadcast({ type, data, room = null, userId }) {
     logger.info(`Broadcasting event: ${type}`)
-    const excludedSocket = await _getUserSocket(contactId)
+    const excludedSocket = await _getUserSocket(userId)
     if (room && excludedSocket) {
-        logger.info(`Broadcast to room ${room} excluding contact: ${contactId}`)
+        logger.info(`Broadcast to room ${room} excluding user: ${userId}`)
         excludedSocket.broadcast.to(room).emit(type, data)
     } else if (excludedSocket) {
-        logger.info(`Broadcast to all excluding contact: ${contactId}`)
+        logger.info(`Broadcast to all excluding user: ${userId}`)
         excludedSocket.broadcast.emit(type, data)
     } else if (room) {
         logger.info(`Emit to room: ${room}`)
@@ -80,9 +80,9 @@ async function broadcast({ type, data, room = null, contactId }) {
     }
 }
 
-async function _getUserSocket(contactId) {
+async function _getUserSocket(userId) {
     const sockets = await _getAllSockets()
-    const socket = sockets.find(s => s.contactId === contactId)
+    const socket = sockets.find(s => s.userId === userId)
     return socket
 }
 async function _getAllSockets() {
@@ -96,7 +96,7 @@ module.exports = {
     setupSocketAPI,
     // emit to everyone / everyone in a specific room (label)
     emitTo,
-    // emit to a specific contact (if currently active in system)
+    // emit to a specific user (if currently active in system)
     emitToUser,
     // Send to all sockets BUT not the current socket - if found
     // (otherwise broadcast to a room / to all)

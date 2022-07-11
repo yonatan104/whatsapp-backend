@@ -29,12 +29,14 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const authRoutes = require('./api/auth/auth.routes')
-const contactRoutes = require('./api/contact/contact.routes')
+const userRoutes = require('./api/user/user.routes')
+const chatRoomRoutes = require('./api/chatRoom/chatRoom.routes')
 // const { setupSocketAPI } = require('./services/socket.service')
 
 
 app.use('/api/auth', authRoutes)
-app.use('/api/contact', contactRoutes)
+app.use('/api/user', userRoutes)
+app.use('/api/chatRoomRoutes', chatRoomRoutes)
 // setupSocketAPI(http)
 
 app.get('/**', (req, res) => {
