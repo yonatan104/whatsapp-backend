@@ -13,10 +13,9 @@ module.exports = {
 }
 
 async function query(filterBy = {}) {
-    const criteria = _buildCriteria(filterBy)
     try {
         const collection = await dbService.getCollection('user')
-        var users = await collection.find({_id:  {$nin:[ObjectId("62cc1cb10536af514c5d980b")]}}).toArray()
+        var users = await collection.find({ _id: { $nin: [ObjectId(filterBy.logedInUserId)]}}).toArray()
         users = users.map(user => {
             delete user.password
             user.createdAt = ObjectId(user._id).getTimestamp()
@@ -94,23 +93,6 @@ async function add(user) {
         logger.error('cannot insert user', user)
         throw err
     }
-}
-
-function _buildCriteria(filterBy) {
-    const criteria = {}
-    // if (filterBy.txt) {
-    //     const txtCriteria = { $regex: filterBy.txt, $options: 'i' }
-    //     criteria.$or = [
-    //         {
-    //             name: txtCriteria
-    //         },
-    //         {
-    //             fullname: txtCriteria
-    //         }
-    //     ]
-    // }
-
-    return criteria
 }
 
 
