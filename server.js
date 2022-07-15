@@ -36,7 +36,7 @@ const chatRoomRoutes = require('./api/chatRoom/chatRoom.routes')
 
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
-app.use('/api/chatRoomRoutes', chatRoomRoutes)
+app.use('/api/chatRoom', chatRoomRoutes)
 // setupSocketAPI(http)
 
 app.get('/**', (req, res) => {

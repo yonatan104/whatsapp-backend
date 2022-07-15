@@ -3,7 +3,7 @@ const { getChatRoom, addChatRoom, updateChatRoom } = require('./chatRoom.control
 const router = express.Router()
 
 router.get('/:id', getChatRoom)
-router.post('/:id', addChatRoom)
+router.post('/', addChatRoom)
 router.put('/:id', updateChatRoom)
 
 

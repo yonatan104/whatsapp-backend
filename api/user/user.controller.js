@@ -1,6 +1,7 @@
 const userService = require('./user.service')
 const logger = require('../../services/logger.service')
 
+
 async function getUser(req, res) {
   try {
     const user = await userService.getById(req.params.id)
