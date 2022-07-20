@@ -2,6 +2,7 @@ const chatRoomService = require('./chatRoom.service')
 const logger = require('../../services/logger.service')
 
 async function getChatRoom(req, res) {
+  console.log('get by iddddddddd');
   try {
     const chatRoom = await chatRoomService.getById(req.params.id)
     res.send(chatRoom)
@@ -31,6 +32,7 @@ async function updateChatRoom(req, res) {
     const chatRoom = req.body
     const savedChatRoom = await chatRoomService.update(chatRoom)
     res.send(savedChatRoom)
+    
   } catch (err) {
     logger.error('Failed to update chat room', err)
     res.status(500).send({ err: 'Failed to update chat room' })

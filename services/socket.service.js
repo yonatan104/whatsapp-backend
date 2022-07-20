@@ -1,5 +1,5 @@
+
 const logger = require('./logger.service')
-const activityService = require('../api/activity/activity.service')
 var gIo = null
 
 function setupSocketAPI(http) {
@@ -13,24 +13,27 @@ function setupSocketAPI(http) {
         socket.on('disconnect', socket => {
             logger.info(`Socket disconnected [id: ${socket.id}]`)
         })
-        socket.on('enter-station', stationId => {
-            if (socket.stationId === stationId) return
-            if (socket.stationId) {
-                socket.leave(socket.stationId)
-                logger.info(`Socket is leaving topic ${socket.stationId} [id: ${socket.stationId}]`)
-            }
-            socket.stationId = stationId
-            socket.join(stationId)
-            console.log('user entered station!', stationId)
+        socket.on('send-message', chatRoom=>{
+            gIo.emit('new-message', chatRoom)
         })
-        socket.on('update-station', station => {
-            socket.broadcast.to(station._id).emit('station-updated', station)
-        })
-        socket.on('activity-log-made', activity => {
-            activityService.add(activity)
-            gIo.emit('activity-log-made', activity)
-            // socket.broadcast.emit('activity-log-made-brodcast', data)
-        })
+        // socket.on('enter-station', stationId => {
+        //     if (socket.stationId === stationId) return
+        //     if (socket.stationId) {
+        //         socket.leave(socket.stationId)
+        //         logger.info(`Socket is leaving topic ${socket.stationId} [id: ${socket.stationId}]`)
+        //     }
+        //     socket.stationId = stationId
+        //     socket.join(stationId)
+        //     console.log('user entered station!', stationId)
+        // })
+        // socket.on('update-station', station => {
+        //     socket.broadcast.to(station._id).emit('station-updated', station)
+        // })
+        // socket.on('activity-log-made', activity => {
+        //     activityService.add(activity)
+        //     gIo.emit('activity-log-made', activity)
+        //     // socket.broadcast.emit('activity-log-made-brodcast', data)
+        // })
         socket.on('set-user-socket', userId => {
             logger.info(`Setting socket.userId = ${userId} for socket [id: ${socket.id}]`)
             socket.userId = userId
@@ -102,3 +105,9 @@ module.exports = {
     // (otherwise broadcast to a room / to all)
     broadcast,
 }
+
+
+
+
+
+
