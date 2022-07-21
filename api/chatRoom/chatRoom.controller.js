@@ -2,7 +2,6 @@ const chatRoomService = require('./chatRoom.service')
 const logger = require('../../services/logger.service')
 
 async function getChatRoom(req, res) {
-  console.log('get by iddddddddd');
   try {
     const chatRoom = await chatRoomService.getById(req.params.id)
     res.send(chatRoom)
@@ -12,7 +11,6 @@ async function getChatRoom(req, res) {
   }
 }
 async function addChatRoom(req, res) {
-  console.log('hii yoni ')
   try {
     const chatRoom = await chatRoomService.add(req.body)
     logger.debug(`new chatRoom created: ` + JSON.stringify(chatRoom))

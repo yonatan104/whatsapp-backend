@@ -3,8 +3,6 @@ const logger = require('../../services/logger.service')
 
 async function login(req, res) {
     const { name, password } = req.body
-    console.log("🚀 ~ file: auth.controller.js ~ line 6 ~ login ~ password", password)
-    console.log("🚀 ~ file: auth.controller.js ~ line 6 ~ login ~ name", name)
     try {
         const user = await authService.login(name, password)
         const loginToken = authService.getLoginToken(user)
@@ -22,7 +20,6 @@ async function login(req, res) {
 async function signup(req, res) {
     try {
         const credentials = req.body
-        console.log("🚀 ~ file: auth.controller.js ~ line 24 ~ signup ~ req.body", req.body)
         // Never log passwords
         const account = await authService.signup(credentials)
         logger.debug(`auth.route - new account created: ` + JSON.stringify(account))

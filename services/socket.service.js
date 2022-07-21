@@ -13,27 +13,17 @@ function setupSocketAPI(http) {
         socket.on('disconnect', socket => {
             logger.info(`Socket disconnected [id: ${socket.id}]`)
         })
-        socket.on('send-message', chatRoom=>{
-            gIo.emit('new-message', chatRoom)
+        socket.on('send-message', chatRoom => {
+            // gIo.emit('new-message', chatRoom)
+            
+            chatRoom.usersIds.forEach(userId => {
+                emitToUser({ type: 'new-message', data: chatRoom, userId})
+            })
         })
-        // socket.on('enter-station', stationId => {
-        //     if (socket.stationId === stationId) return
-        //     if (socket.stationId) {
-        //         socket.leave(socket.stationId)
-        //         logger.info(`Socket is leaving topic ${socket.stationId} [id: ${socket.stationId}]`)
-        //     }
-        //     socket.stationId = stationId
-        //     socket.join(stationId)
-        //     console.log('user entered station!', stationId)
-        // })
-        // socket.on('update-station', station => {
-        //     socket.broadcast.to(station._id).emit('station-updated', station)
-        // })
-        // socket.on('activity-log-made', activity => {
-        //     activityService.add(activity)
-        //     gIo.emit('activity-log-made', activity)
-        //     // socket.broadcast.emit('activity-log-made-brodcast', data)
-        // })
+        socket.on('call-request', callRequest => {
+            emitToUser({ type: 'new-call-Request', data: callRequest, userId: callRequest.toUserId })
+        })
+
         socket.on('set-user-socket', userId => {
             logger.info(`Setting socket.userId = ${userId} for socket [id: ${socket.id}]`)
             socket.userId = userId
