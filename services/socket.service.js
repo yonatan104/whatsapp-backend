@@ -19,7 +19,12 @@ function setupSocketAPI(http) {
             })
         })
         socket.on('call-request', callRequest => {
-            emitToUser({ type: 'new-call-Request', data: callRequest, userId: callRequest.toUserId })
+            emitToUser({ type: 'incoming-call-Request', data: callRequest, userId: callRequest.toUserId })
+        })
+        
+        socket.on('disconnect-peer-call', toUserId =>{
+            console.log('disconnect-peer-call', toUserId);
+            emitToUser({ type: 'got-disconnect-peer-call', data: toUserId, userId: toUserId.toUserId })
         })
 
         socket.on('set-user-socket', userId => {
