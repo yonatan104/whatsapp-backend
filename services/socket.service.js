@@ -13,9 +13,7 @@ function setupSocketAPI(http) {
         socket.on('disconnect', socket => {
             logger.info(`Socket disconnected [id: ${socket.id}]`)
         })
-        socket.on('send-message', chatRoom => {
-            // gIo.emit('new-message', chatRoom)
-            
+        socket.on('send-message', chatRoom => {            
             chatRoom.usersIds.forEach(userId => {
                 emitToUser({ type: 'new-message', data: chatRoom, userId})
             })
