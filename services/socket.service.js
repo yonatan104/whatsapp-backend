@@ -13,7 +13,9 @@ function setupSocketAPI(http) {
         socket.on('disconnect', socket => {
             logger.info(`Socket disconnected [id: ${socket.id}]`)
         })
-        socket.on('send-message', chatRoom => {            
+        socket.on('send-message', chatRoom => {     
+            if(!chatRoom) return       
+            if (!chatRoom.usersIds) return       
             chatRoom.usersIds.forEach(userId => {
                 emitToUser({ type: 'new-message', data: chatRoom, userId})
             })
@@ -27,7 +29,7 @@ function setupSocketAPI(http) {
             emitToUser({ type: 'got-disconnect-peer-call', data: toUserId, userId: toUserId.toUserId })
         })
 
-        
+
         socket.on('set-user-socket', userId => {
             logger.info(`Setting socket.userId = ${userId} for socket [id: ${socket.id}]`)
             socket.userId = userId
