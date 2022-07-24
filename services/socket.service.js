@@ -27,6 +27,7 @@ function setupSocketAPI(http) {
             emitToUser({ type: 'got-disconnect-peer-call', data: toUserId, userId: toUserId.toUserId })
         })
 
+        
         socket.on('set-user-socket', userId => {
             logger.info(`Setting socket.userId = ${userId} for socket [id: ${socket.id}]`)
             socket.userId = userId
